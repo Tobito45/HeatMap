@@ -7,7 +7,8 @@ public class HeatMapController : MonoBehaviour
 
     public GameObject prefab;
     //public float distanceBetweenMaps = 2;
-    public float waitSecondsBetweenMaps = 3, waitSecondsBetweenMapsAgainStart = 1.5f;
+    public float distanceBetweenMaps = 0.75f, waitSecondsBetweenMapsAgainStart = 1.5f, speedAnimation;
+    private float startposition = 5;
     List<HeatMapClass> heatmaps;
 
 
@@ -23,7 +24,7 @@ public class HeatMapController : MonoBehaviour
 
     GameObject createHeatMap(int indexInList)
     {
-        GameObject newHeatMap = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+        GameObject newHeatMap = Instantiate(prefab, new Vector3(0, indexInList * distanceBetweenMaps + startposition), prefab.transform.rotation);
         for(int i = 0; i < heatmaps[indexInList].coordinates.Length; i++)
         {
             HeatMapClass heatMap = heatmaps[indexInList];
@@ -40,18 +41,17 @@ public class HeatMapController : MonoBehaviour
         for (int i = 0; i < heatmaps.Count; i++)
         {
             GameObject obj = createHeatMap(i);
-            yield return new WaitForSeconds(waitSecondsBetweenMaps);
-            StartCoroutine(disableObjectinSeconds(obj.GetComponent<Animation>().clip.length, obj));
+            Vector3 target = new Vector3(0, i * distanceBetweenMaps, 0);
+
+            while (Vector3.Distance(obj.transform.position, target) > 0.05f)
+            {
+                obj.transform.position = Vector3.MoveTowards(obj.transform.position, target, Time.deltaTime * speedAnimation);
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return new WaitForSeconds(waitSecondsBetweenMapsAgainStart);
+
         }
-        yield return new WaitForSeconds(waitSecondsBetweenMapsAgainStart);
-        Start();
-    }
 
-
-    IEnumerator disableObjectinSeconds(float seconds, GameObject obj)
-    {
-        yield return new WaitForSeconds(seconds);
-        Destroy(obj);
     }
 
     Color detectColor(string col)
