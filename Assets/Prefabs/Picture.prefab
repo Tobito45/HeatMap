@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2471824478038079878}
   - component: {fileID: 2471824478038079879}
   - component: {fileID: 2471824478038079876}
+  - component: {fileID: 3071843140231755098}
   m_Layer: 0
   m_Name: Picture
   m_TagString: Untagged
@@ -111,6 +112,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originMaterial: {fileID: 2100000, guid: 829489462bddb854cb0ac24c48985b95, type: 2}
+--- !u!111 &3071843140231755098
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2471824478038079877}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: dcabcfa728ef81f4a8149527a0d95bca, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: dcabcfa728ef81f4a8149527a0d95bca, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &3290112217100491882
 GameObject:
   m_ObjectHideFlags: 0

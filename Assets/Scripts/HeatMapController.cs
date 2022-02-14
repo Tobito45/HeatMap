@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class HeatMapController : MonoBehaviour
 {
+
     public GameObject prefab;
-    public float distanceBetweenMaps = 2;
+    //public float distanceBetweenMaps = 2;
+    public float waitSecondsBetweenMaps = 3, waitSecondsBetweenMapsAgainStart = 1.5f;
     List<HeatMapClass> heatmaps;
 
 
@@ -15,16 +17,13 @@ public class HeatMapController : MonoBehaviour
        
         heatmaps = getJsonFiles("heatmap1");
 
-        for(int i = 0; i < heatmaps.Count; i ++)
-        {
-            createHeatMap(i);
-        } 
-        
+
+        StartCoroutine(corotineSpawn());
     }
 
-    void createHeatMap(int indexInList)
+    GameObject createHeatMap(int indexInList)
     {
-        GameObject newHeatMap = Instantiate(prefab, new Vector3(indexInList * distanceBetweenMaps, 0, 0), Quaternion.identity);
+        GameObject newHeatMap = Instantiate(prefab, Vector3.zero, Quaternion.identity);
         for(int i = 0; i < heatmaps[indexInList].coordinates.Length; i++)
         {
             HeatMapClass heatMap = heatmaps[indexInList];
@@ -32,6 +31,27 @@ public class HeatMapController : MonoBehaviour
             newHeatMap.GetComponent<ShowOnMap>().createCircle(detectColor(heatMap.colorName), coord.x, coord.y, coord.size);
 
         }
+        return newHeatMap;
+    }
+
+
+    IEnumerator corotineSpawn()
+    {
+        for (int i = 0; i < heatmaps.Count; i++)
+        {
+            GameObject obj = createHeatMap(i);
+            yield return new WaitForSeconds(waitSecondsBetweenMaps);
+            StartCoroutine(disableObjectinSeconds(obj.GetComponent<Animation>().clip.length, obj));
+        }
+        yield return new WaitForSeconds(waitSecondsBetweenMapsAgainStart);
+        Start();
+    }
+
+
+    IEnumerator disableObjectinSeconds(float seconds, GameObject obj)
+    {
+        yield return new WaitForSeconds(seconds);
+        Destroy(obj);
     }
 
     Color detectColor(string col)
