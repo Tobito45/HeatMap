@@ -24,12 +24,12 @@ public class HeatMapController : MonoBehaviour
 
     GameObject createHeatMap(int indexInList)
     {
-        GameObject newHeatMap = Instantiate(prefab, new Vector3(0, indexInList * distanceBetweenMaps + startposition), prefab.transform.rotation);
+        GameObject newHeatMap = Instantiate(prefab, new Vector3(indexInList * distanceBetweenMaps, startposition, 0), prefab.transform.rotation);
         for(int i = 0; i < heatmaps[indexInList].coordinates.Length; i++)
         {
             HeatMapClass heatMap = heatmaps[indexInList];
             Coord coord = heatmaps[indexInList].coordinates[i];
-            newHeatMap.GetComponent<ShowOnMap>().createCircle(detectColor(heatMap.colorName), coord.x, coord.y, coord.size);
+            newHeatMap.GetComponentInChildren<ShowOnMap>().createCircle(detectColor(heatMap.colorName), coord.x, coord.y, coord.size);
 
         }
         return newHeatMap;
@@ -41,7 +41,7 @@ public class HeatMapController : MonoBehaviour
         for (int i = 0; i < heatmaps.Count; i++)
         {
             GameObject obj = createHeatMap(i);
-            Vector3 target = new Vector3(0, i * distanceBetweenMaps, 0);
+            Vector3 target = new Vector3(i * distanceBetweenMaps, 0, 0);
 
             while (Vector3.Distance(obj.transform.position, target) > 0.05f)
             {
